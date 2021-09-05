@@ -20,11 +20,9 @@ const Login = ({user, setUser, setUrlList }) => {
       setTimeout(()=>(document.querySelector('#invalid-text').style.display = 'block'), 500);
     }
 
-    console.log('From login user:', username,'password:', password, 'postgresURI', postgresURI);
     window.api.send('postgresUrlToMain', postgresURI);
-
     window.api.send('loginToMain', {username, password});
-    console.log('HELLOHELLOHELLO');
+    
     window.api.receive('userLoggedInFromMain', (validUser) => {
       console.log('validUser: ', validUser);
       setUser({ loggedIn: validUser});

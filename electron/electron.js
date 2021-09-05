@@ -83,7 +83,7 @@ ipcMain.on('activate', () => {
  
  
 let query;
-// //! #1 postgres to Main
+// //! #1 Connect user to the database
 ipcMain.on('postgresUrlToMain', async (event, arg) => {
   console.log('in postgresToMain', arg);
   query = connectToDb(arg);

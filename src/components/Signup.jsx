@@ -10,11 +10,15 @@ const Signup = ({user, setUser, userID, setuserID, setUrlList }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [postgresURI, setPostgresURI] = useState('');
 
   const routerHistory = useHistory();
   
   const handleSignup = (e) => {
     e.preventDefault();
+
+    // send connection string to backend
+    window.api.send('postgresUrlToMain', postgresURI);
 
     //send user info to backend
     window.api.send('signUpToMain', {username, password, email, fullName});
@@ -30,6 +34,7 @@ const Signup = ({user, setUser, userID, setuserID, setUrlList }) => {
       setUser({ loggedIn: validUser});
     });
   };
+
   return (
     <div id="signup-form">
       <div id='signup'>
@@ -78,6 +83,16 @@ const Signup = ({user, setUser, userID, setuserID, setUrlList }) => {
             type="password" 
             required 
             onChange={(e) => setPassword(e.target.value)} 
+          />
+        </div>
+        <div className='signup-div'>
+          <label htmlFor="postgresURI">PostgreSQL:</label>
+          <input 
+            name="postgresURI" 
+            placeholder='URL' 
+            id="postgresURI" 
+            required 
+            onChange={(e) => setPostgresURI(e.target.value)} 
           />
         </div>
         <div id='signup-button-div'>
