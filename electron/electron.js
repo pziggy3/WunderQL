@@ -3,8 +3,11 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
 const { checkResponseTime, loadTest, checkIfQueryExist, connectToDb } = require('./utils');
 const url = require('url');
- 
+
 //-------Electron Setup--------------------------------------------------------
+// stop app from launching multiple times during install
+if (require('electron-squirrel-startup')) return app.quit();
+
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
