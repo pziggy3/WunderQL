@@ -1,91 +1,92 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import logo from '../../electron/assets/logo-small.png';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import logo from "../../electron/assets/logo-small.png";
 
+const Login = ({ user, setUser, setUrlList }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [postgresURI, setPostgresURI] = useState("");
 
-const Login = ({user, setUser, setUrlList }) => {
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [postgresURI, setPostgresURI] = useState('');
-  
   const handleLogin = (e) => {
-    console.log('HI IM HANDLE LOGIN');
+    console.log("HI IM HANDLE LOGIN");
     e.preventDefault();
-    
 
     // display error if wrong credentials used
     if (!user.loggedIn) {
-      setTimeout(()=>(document.querySelector('#invalid-text').style.display = 'block'), 500);
+      setTimeout(
+        () => (document.querySelector("#invalid-text").style.display = "block"),
+        500
+      );
     }
 
-    window.api.send('postgresUrlToMain', postgresURI);
-    window.api.send('loginToMain', {username, password});
-    
-    window.api.receive('userLoggedInFromMain', (validUser) => {
-      console.log('validUser: ', validUser);
-      setUser({ loggedIn: validUser});
+    window.api.send("postgresUrlToMain", postgresURI);
+    window.api.send("loginToMain", { username, password });
+
+    window.api.receive("userLoggedInFromMain", (validUser) => {
+      console.log("validUser: ", validUser);
+      setUser({ loggedIn: validUser });
     });
 
     // request URLs from the db as soon as user logs in...might need to add conditionals here
-    window.api.receive('urlsFromMain', data => setUrlList(data));
-    
+    window.api.receive("urlsFromMain", (data) => setUrlList(data));
   };
 
-  
   return (
     <div id="login-form">
-      <div id='logo'>
-        <img src={logo} alt='logo'></img>
+      <div id="logo">
+        <img src={logo} alt="logo"></img>
       </div>
       <form>
-        <div className='signup-div'>
+        <div className="signup-div">
           <label htmlFor="username">Username: </label>
-          <input 
-            name="username" 
-            placeholder='Username' 
-            id="username" 
-            type="username" 
-            required 
-            onChange={(e) => setUsername(e.target.value)} 
+          <input
+            name="username"
+            placeholder="Username"
+            id="username"
+            type="username"
+            required
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div className='signup-div'>
+        <div className="signup-div">
           <label htmlFor="password">Password: </label>
-          <input 
-            name="password" 
-            placeholder='Password' 
-            id="password" 
-            type="password" 
-            required 
-            onChange={(e) => setPassword(e.target.value)} 
+          <input
+            name="password"
+            placeholder="Password"
+            id="password"
+            type="password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className='signup-div'>
+        <div className="signup-div">
           <label htmlFor="postgresURI">PostgreSQL:</label>
-          <input 
-            name="postgresURI" 
-            placeholder='URL' 
-            id="postgresURI" 
-            required 
-            onChange={(e) => setPostgresURI(e.target.value)} 
+          <input
+            name="postgresURI"
+            placeholder="URL"
+            id="postgresURI"
+            required
+            onChange={(e) => setPostgresURI(e.target.value)}
           />
         </div>
-        <div id='login-button-div'>
-          <Button 
+        <div id="login-button-div">
+          <Button
             onClick={handleLogin}
-            variant="contained" 
-            id='login-button' 
+            variant="contained"
+            id="login-button"
             color="primary"
-          >Login</Button>
-          <div id='signup-link-div'>Not a User?&nbsp;    
-            <Link to='/signup'>Sign Up</Link>
+          >
+            Login
+          </Button>
+          <div id="signup-link-div">
+            Not a User?&nbsp;
+            <Link to="/signup">Sign Up</Link>
           </div>
         </div>
       </form>
-      <div id='invalid-credentials'>
-        <h3 id='invalid-text'>Invalid username and/or password!</h3>
+      <div id="invalid-credentials">
+        <h3 id="invalid-text">Invalid username and/or password!</h3>
       </div>
     </div>
   );

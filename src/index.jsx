@@ -1,11 +1,10 @@
-  
-const React = require('react');
-const ReactDOM = require('react-dom');
-import App from './App.jsx';
+const React = require("react");
+const ReactDOM = require("react-dom");
+import App from "./App.jsx";
 
-const root = document.createElement('div');
+const root = document.createElement("div");
 
-root.id = 'root';
+root.id = "root";
 document.body.appendChild(root);
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

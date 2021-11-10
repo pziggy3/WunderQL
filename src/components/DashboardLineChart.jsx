@@ -1,14 +1,23 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const LineChartComponent = ({ history }) => {
-  
   const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {  
+    if (active && payload && payload.length) {
       console.log(payload[0]);
-      
+
       const getDifference = () => {
-        return Math.abs(payload[0].payload.best_fit - payload[0].payload.runtime).toFixed(1);
+        return Math.abs(
+          payload[0].payload.best_fit - payload[0].payload.runtime
+        ).toFixed(1);
       };
       return (
         <div className="custom-tooltip">
@@ -21,9 +30,9 @@ const LineChartComponent = ({ history }) => {
   };
 
   return (
-    <ResponsiveContainer width='100%' height='100%'>
+    <ResponsiveContainer width="100%" height="100%">
       <LineChart
-        id='line-chart'
+        id="line-chart"
         data={history}
         margin={{
           top: 5,
@@ -33,27 +42,23 @@ const LineChartComponent = ({ history }) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis 
-          dataKey="date" 
-          angle='0'
-          tick={{fontSize: 10}}
-        />
-        <YAxis 
-          type='number'
-          label={{ value: 'time(ms)', angle: -90, position:'insideLeft' }} 
-          domain={['dataMin-50', 'dataMax+50']} 
-          allowDecimals='false'
+        <XAxis dataKey="date" angle="0" tick={{ fontSize: 10 }} />
+        <YAxis
+          type="number"
+          label={{ value: "time(ms)", angle: -90, position: "insideLeft" }}
+          domain={["dataMin-50", "dataMax+50"]}
+          allowDecimals="false"
         />
         <Tooltip content={<CustomTooltip />} />
-        <Line 
-          type="monotone" 
-          dataKey="runtime" 
-          dot={{stroke: '#e01d1d', strokeWidth: 1}} 
+        <Line
+          type="monotone"
+          dataKey="runtime"
+          dot={{ stroke: "#e01d1d", strokeWidth: 1 }}
           strokeWidth={0}
-          animationEasing='linear'
+          animationEasing="linear"
           isAnimationActive={false}
         />
-        <Line type="monotone" dataKey="best_fit" stroke="#8884d8" dot={false}/>
+        <Line type="monotone" dataKey="best_fit" stroke="#8884d8" dot={false} />
       </LineChart>
     </ResponsiveContainer>
   );

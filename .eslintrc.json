@@ -22,7 +22,7 @@
   "rules": {
     "no-unused-vars": ["off", { "vars": "local" }],
     "indent": ["warn", 2],
-    "quotes": ["warn", "single"],
+    "quotes": ["warn", "double"],
     "prefer-const": "warn",
     "semi": ["warn", "always"],
     "react/prefer-stateless-function": "off",

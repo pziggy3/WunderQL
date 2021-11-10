@@ -1,29 +1,29 @@
-const { performance } = require('perf_hooks');
-const { fetch } = require('cross-fetch');
-const childProc = require('child_process');
-const { Pool } = require('pg');
- 
+const { performance } = require("perf_hooks");
+const { fetch } = require("cross-fetch");
+const childProc = require("child_process");
+const { Pool } = require("pg");
+
 // Connects to postgreSQL db
 function connectToDb(postgresUrl) {
   const pool = new Pool({
-    connectionString: postgresUrl
+    connectionString: postgresUrl,
   });
-  
+
   const query = (text, params, callback) => {
-    console.log('executed query', text);
+    console.log("executed query", text);
     return pool.query(text, params, callback);
   };
- 
+
   return query;
 }
- 
+
 // Checks response time of query
 async function checkResponseTime(query, uri_ID) {
   const time1 = performance.now();
   await fetch(uri_ID, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: `
@@ -33,26 +33,30 @@ async function checkResponseTime(query, uri_ID) {
   });
   return performance.now() - time1;
 }
- 
+
 // Conducts load test on endpoint
 const loadTest = async (CHILD_PROCESSES, URL, QUERY) => {
   const times = []; // array of response times of all child processes
   const children = []; // array of all child processes created
- 
+
   for (let i = 0; i < CHILD_PROCESSES; i++) {
     // Spawn the child process
-    const childProcess = childProc.spawn('node', [`${__dirname}/child.js`, `--url=${URL}`, `--query=${QUERY}`]);
+    const childProcess = childProc.spawn("node", [
+      `${__dirname}/child.js`,
+      `--url=${URL}`,
+      `--query=${QUERY}`,
+    ]);
     children.push(childProcess);
   }
-  // Map child processes into promises that resolve to true or false 
+  // Map child processes into promises that resolve to true or false
   // Response times will be pushed to times array each time child process logs the response time
   let responses = children.map(function wait(child) {
     return new Promise(function c(res) {
-      child.stdout.on('data', (data) => {
+      child.stdout.on("data", (data) => {
         console.log(`child stdout: ${data}`);
         times.push(parseInt(data));
       });
-      child.on('exit', function (code) {
+      child.on("exit", function (code) {
         if (code === 0) {
           res(true);
         } else {
@@ -61,52 +65,51 @@ const loadTest = async (CHILD_PROCESSES, URL, QUERY) => {
       });
     });
   });
-  
+
   // Wait until all promises have been resolved
   responses = await Promise.all(responses);
- 
-  // Check if all promises were resolved successfully 
+
+  // Check if all promises were resolved successfully
   let successOrFailure;
   let averageResponseTime;
   if (responses.filter(Boolean).length === responses.length) {
     // Calculate average of all response times
     const sum = times.reduce((a, b) => a + b, 0);
-    const avg = (sum / times.length) || 0;
+    const avg = sum / times.length || 0;
     console.log(`average: ${avg}`);
-    console.log('success!');  
+    console.log("success!");
     // Update load test response variables
-    successOrFailure = 'success';
+    successOrFailure = "success";
     averageResponseTime = avg;
   } else {
-    console.log('failures!');
+    console.log("failures!");
     // Update load test response variables
-    successOrFailure = 'failure';
+    successOrFailure = "failure";
     averageResponseTime = 0;
   }
- 
+
   // Return whether load test was success/failure, and the average response time
   return {
     successOrFailure,
-    averageResponseTime
+    averageResponseTime,
   };
 };
- 
+
 // Checks if query exists in db
-async function checkIfQueryExist(queryString, urlId, queryName, query)  {
- 
+async function checkIfQueryExist(queryString, urlId, queryName, query) {
   const checkIfQueryExist = {
-    text: 'select _id FROM queries WHERE query_string = $1 AND url_id = $2',
-    values: [queryString, urlId]
+    text: "select _id FROM queries WHERE query_string = $1 AND url_id = $2",
+    values: [queryString, urlId],
   };
- 
+
   const existingQueryResult = await query(checkIfQueryExist);
   const existingQueryID = await existingQueryResult.rows;
- 
+
   let queryId;
- 
+
   if (existingQueryID.length === 0) {
     const insertQuery = {
-      text: 'INSERT INTO queries(query_string, url_id, query_name) VALUES ($1, $2, $3) RETURNING _id',
+      text: "INSERT INTO queries(query_string, url_id, query_name) VALUES ($1, $2, $3) RETURNING _id",
       values: [queryString, urlId, queryName],
     };
     const queryResult = await query(insertQuery);
@@ -114,13 +117,13 @@ async function checkIfQueryExist(queryString, urlId, queryName, query)  {
   } else {
     queryId = existingQueryID[0]._id;
   }
-  console.log('queryId that is returned from checkIfQueryExist' );
+  console.log("queryId that is returned from checkIfQueryExist");
   return queryId;
 }
- 
+
 module.exports = {
   checkResponseTime,
   loadTest,
   checkIfQueryExist,
-  connectToDb
+  connectToDb,
 };

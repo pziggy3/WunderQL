@@ -1,5 +1,15 @@
-import React from 'react';
-import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React from "react";
+import {
+  ComposedChart,
+  Line,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const BarChartComponent = ({ barChartData }) => {
   return (
@@ -17,7 +27,7 @@ const BarChartComponent = ({ barChartData }) => {
       >
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis dataKey="date" scale="band" />
-        <YAxis type="number" domain={[0, 'dataMax+5']}/>
+        <YAxis type="number" domain={[0, "dataMax+5"]} />
         <Tooltip />
         <Legend />
         <Bar dataKey="query_tests" barSize={20} fill="#413ea0" />

@@ -1,35 +1,35 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import React from "react";
+import clsx from "clsx";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
 
-import { useDarkTheme, useDarkThemeUpdate } from './ThemeContext.jsx';
+import { useDarkTheme, useDarkThemeUpdate } from "./ThemeContext.jsx";
 
-import { Link } from 'react-router-dom';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
+import { Link } from "react-router-dom";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
@@ -56,24 +56,24 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
   },
   contentShift: {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -86,7 +86,6 @@ const NavBar = (props) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -98,8 +97,8 @@ const NavBar = (props) => {
   const darkTheme = useDarkTheme();
   const toggleDarkMode = useDarkThemeUpdate();
   const themeStyle = {
-    backgroundColor: darkTheme ? '#333' : 'white',
-    color: darkTheme ? '#CCC' : '#333'
+    backgroundColor: darkTheme ? "#333" : "white",
+    color: darkTheme ? "#CCC" : "#333",
   };
 
   return (
@@ -109,7 +108,9 @@ const NavBar = (props) => {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
-        style={{background:'linear-gradient(205deg, rgba(63,99,255,1) 0%, rgba(54,54,193,1) 21%, rgba(231,117,117,1) 100%)', 
+        style={{
+          background:
+            "linear-gradient(205deg, rgba(63,99,255,1) 0%, rgba(54,54,193,1) 21%, rgba(231,117,117,1) 100%)",
         }}
       >
         <Toolbar>
@@ -139,39 +140,63 @@ const NavBar = (props) => {
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === "ltr" ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
           </IconButton>
         </div>
         <Divider />
         <List>
-          <Link to="/" className='nav-list-item' onClick={handleDrawerClose}>
+          <Link to="/" className="nav-list-item" onClick={handleDrawerClose}>
             <ListItem button key={1}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary='Home' />
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
             </ListItem>
           </Link>
-          <Link to="/dashboard" className='nav-list-item' onClick={handleDrawerClose}>
+          <Link
+            to="/dashboard"
+            className="nav-list-item"
+            onClick={handleDrawerClose}
+          >
             <ListItem button key={2}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary='URL Dashboard' />
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="URL Dashboard" />
             </ListItem>
           </Link>
-          <Link to="/testquery" className='nav-list-item' onClick={handleDrawerClose}>
+          <Link
+            to="/testquery"
+            className="nav-list-item"
+            onClick={handleDrawerClose}
+          >
             <ListItem button key={3}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary='Test Query' />
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Test Query" />
             </ListItem>
           </Link>
-          <Link to="/loadtest" className='nav-list-item' onClick={handleDrawerClose}>
+          <Link
+            to="/loadtest"
+            className="nav-list-item"
+            onClick={handleDrawerClose}
+          >
             <ListItem button key={4}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary='Load Test' />
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Load Test" />
             </ListItem>
           </Link>
-        </List>    
-        <Divider />  
+        </List>
+        <Divider />
         <FormControlLabel
-          id='dark-switch'
+          id="dark-switch"
           control={
             <Switch
               onChange={toggleDarkMode}
