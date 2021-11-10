@@ -1,14 +1,20 @@
 const path = require('path');
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
-const isDev = require('electron-is-dev');
+const isDev = process.env.NODE_ENV === "development";
 const { checkResponseTime, loadTest, checkIfQueryExist, connectToDb } = require('./utils');
+const PORT = 4000;
+const selfHost = `http://localhost:${PORT}`;
 const url = require('url');
 
 //-------Electron Setup--------------------------------------------------------
 // stop app from launching multiple times during install
-if (require('electron-squirrel-startup')) return app.quit();
+// if (require('electron-squirrel-startup')) return app.quit();
 
-function createWindow() {
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let win;
+
+async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 1000,
@@ -18,6 +24,7 @@ function createWindow() {
     icon: `${__dirname}/assets/icon.png`,
     frame: true,
     webPreferences: {
+      devTools: isDev,
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       nodeIntegrationInSubFrames: false,
@@ -38,14 +45,18 @@ function createWindow() {
   //     :  path.join(__dirname, '../dist', 'index.html')
   // );
  
+  if (isDev) {
+    win.loadURL(selfHost);
+  } else {
+    const indexPath = url.format({
+      protocol: 'file:',
+      pathname: path.join(__dirname, '../dist', 'index.html'),
+      slashes: true,
+    });
+    win.loadURL(indexPath);
+  }
 
-  const indexPath = url.format({
-    protocol: 'file:',
-    pathname: path.join(__dirname, '../dist', 'index.html'),
-    slashes: true,
-  });
  
-  win.loadURL(indexPath);
  
   win.on('closed', function(){
     app.quit();

@@ -12,7 +12,7 @@ module.exports = merge(base, {
   devtool: 'source-map', // Show the source map so we can debug when developing locally
   devServer: {
     host: 'localhost',
-    port: '3000',
+    port: '4000',
     hot: true, // Hot-reload this server if changes are detected
     compress: true, // Compress (gzip) files that are served
     contentBase: path.resolve(__dirname, 'dist'), // Where we serve the local dev server's files from
@@ -26,7 +26,7 @@ module.exports = merge(base, {
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'electron/index.html'),
-      filename: 'index.html',
+      filename: '[name].html',
       nonce: nonce  // added a new property for ejs template
     }),
     new CspHtmlWebpackPlugin({

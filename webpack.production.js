@@ -13,7 +13,7 @@ module.exports = merge(base, {
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'electron/index.html'),
-      filename: '[name].html',
+      filename: '[name]-prod.html',
       base: 'app://rse'
     }),
     // You can paste your CSP in this website https://csp-evaluator.withgoogle.com/
@@ -29,7 +29,7 @@ module.exports = merge(base, {
       },
       {
         hashEnabled: {
-          'style-src': false
+          'style-src': true
         }
       }
     )

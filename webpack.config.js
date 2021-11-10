@@ -1,8 +1,15 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
 
 module.exports = {
+  target: 'web', // Our app can run without electron
+  entry: ['./src/index.jsx'],
+  output: {
+    path: path.resolve(__dirname, 'dist'), // Where all the output files get dropped after webpack is done with them
+    filename: 'bundle.js' // The name of the webpack bundle that's generated
+  },
   module: {
     rules: [
       {
@@ -25,7 +32,6 @@ module.exports = {
       },
     ],
   },
-  target: 'electron-renderer',
   plugins: [
     new HtmlWebpackPlugin({ title: 'WunderQL' }),
     new MiniCssExtractPlugin({
@@ -34,9 +40,9 @@ module.exports = {
       filename: 'bundle.css',
       chunkFilename: '[id].css',
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env.NODE_ENV': JSON.stringify('production'),
+    // }),
     new webpack.ProvidePlugin({
       'React': 'react',
     }),
